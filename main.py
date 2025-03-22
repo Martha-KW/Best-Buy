@@ -63,7 +63,9 @@ def make_order(store):
         product_index = int(choice) - 1
         selected_product = products[product_index]
 
-        amount = input(f"What amount do you want of {selected_product.name}? ").strip()
+        amount = input(
+            f"What amount do you want of {
+                selected_product.name}? ").strip()
         if not amount.isdigit() or int(amount) <= 0:
             print("Invalid amount. Please enter a positive number.")
             continue

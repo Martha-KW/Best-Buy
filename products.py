@@ -1,6 +1,7 @@
 class Product:
     """This class is a blueprint for all products that are sold at best buy store. It holds
     name, price, quantity and availability in stock."""
+
     def __init__(self, name, price, quantity):
         if not name or price < 0 or quantity < 0:
             raise ValueError(
@@ -57,8 +58,8 @@ class Product:
 
 # Test cases
 if __name__ == "__main__":
-    """This function initializes product instances, and runs the class methods for 
-    demonstration at the moment. It simulates a purchase,  restock of items and 
+    """This function initializes product instances, and runs the class methods for
+    demonstration at the moment. It simulates a purchase,  restock of items and
     can check the status of a product."""
     bose = Product("Bose QuietComfort Earbuds", price=250, quantity=500)
     mac = Product("MacBook Air M2", price=1450, quantity=100)
