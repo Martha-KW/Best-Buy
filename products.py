@@ -5,7 +5,8 @@ class Product:
     def __init__(self, name, price, quantity):
         if not name or price < 0 or quantity < 0:
             raise ValueError(
-                "Invalid product details: Name must be non-empty, price and quantity must be non-negative.")
+                "Invalid product details: Name must be non-empty, price and quantity"
+                "must be non-negative.")
 
         self.name = name
         self.price = price
@@ -43,8 +44,8 @@ class Product:
         return f"{self.name}, Price: ${self.price}, Quantity: {self.quantity}"
 
     def buy(self, quantity):
-        """This function checks if enough items of product are in stock to buy it and can raise
-        a ValueError in case it is not enough in stock.
+        """This function checks if enough items of product are in stock to buy it and can
+        raise a ValueError in case it is not enough in stock.
         It returns the total of the cart as a float"""
         if quantity <= 0:
             raise ValueError("Purchase quantity must be greater than 0.")
