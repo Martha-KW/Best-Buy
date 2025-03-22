@@ -10,14 +10,16 @@ product_list = [
 best_buy = store.Store(product_list)
 
 
-# Funktionen für das Menü
 def list_products(store):
+    """This function prints a listing of all products that are available at Best
+    Buy including the name, the price and the quantity of the products."""
     print("------")
     products = store.get_all_products()
     if products:
         for idx, product in enumerate(products, 1):
             print(
-                f"{idx}. {product.name}, Price: ${product.price}, Quantity: {product.get_quantity()}")
+                f"{idx}. {product.name}, Price: ${product.price},"
+                f" Quantity: {product.get_quantity()}")
     else:
         print("No active products in the store.")
     print("------")
@@ -25,55 +27,71 @@ def list_products(store):
 
 
 def show_total_number(store):
+    """This function prints the total amount of products in store regardless of what
+    instance it is and what price it has."""
     total = store.get_total_quantity()
-    print(f"Total of {total} items in store.")
+    print(f"\nTotal of {total} items in store.\n")
     return True
 
 
 def make_order(store):
-    print("------")
-    list_products(store)  # Zeigt die Produkte erneut an
-    print("When you want to finish order, enter empty text.")
+    """This function simulates the ordering process in the simulated Best Price store."""
+    print("\n------")
+    products = store.get_all_products()
+    if not products:
+        print("No active products in the store.")
+        return True
 
-    order_list = []
+    for idx, product in enumerate(products, start=1):
+        print(f"{idx}. {product.name}, Price: ${product.price},"
+              f" Quantity: {product.get_quantity()}")
+    print("------")
+
+    order_total = 0
+    order_items = []
 
     while True:
-        product_choice = input("Which product # do you want? ")
-        if product_choice == "":
-            break  # Beendet die Bestellaufnahme
+        print("When you want to finish order, enter empty text.")
+        choice = input("Which product # do you want?: ").strip()
+        if not choice:
+            break
 
-        try:
-            product_index = int(
-                product_choice) - 1  # 1-basiertes Menü auf 0-basierte Liste anpassen
-            product = store.get_all_products()[product_index]
-        except (ValueError, IndexError):
-            print("Invalid choice. Please select a valid product number.")
+        if not choice.isdigit() or not (1 <= int(choice) <= len(products)):
+            print("Invalid input. Please enter a valid product number.")
             continue
 
-        amount = input("What amount do you want? ")
-        if not amount.isdigit():
-            print("Please enter a valid number.")
+        product_index = int(choice) - 1
+        selected_product = products[product_index]
+
+        amount = input(f"What amount do you want of {selected_product.name}? ").strip()
+        if not amount.isdigit() or int(amount) <= 0:
+            print("Invalid amount. Please enter a positive number.")
             continue
 
         amount = int(amount)
-        if amount > product.get_quantity():
-            print(f"Sorry, only {product.get_quantity()} available.")
-        else:
-            order_list.append((product, amount))
-            print("Product added to list!")
+        if selected_product.get_quantity() < amount:
+            print("Not enough stock available.")
+            continue
 
-    if order_list:
-        print("Order placed successfully!")
-    else:
-        print("No items were ordered.")
+        order_total += selected_product.price * amount
+        order_items.append((selected_product, amount))
+        print("Product added to list!")
+
+    if order_items:
+        print("********")
+        print(f"Order made! Total payment: ${order_total}")
+        print("********")
+
+    return True
 
 
 def quit_best_buy(store):
-    print("Exiting store. Goodbye!")
-    return False  # Signalisiert `start()`, dass die Schleife aufhören soll
+    """This function is the exit door for the shop and interrupts the while True loop."""
+    print("Thanks for your visit at Best Buy. Goodbye!")
+    return False
 
 
-# Function Dispatcher
+# function dispatcher for scalability of the online shop
 func_dict = {
     1: list_products,
     2: show_total_number,
@@ -83,7 +101,7 @@ func_dict = {
 
 
 def start(store):
-    """This function prints and controls the CLI menu."""
+    """This function prints and controls the CLI menu and processes user input."""
     while True:
         print("\n   Store Menu ")
         print("   ----------")
@@ -100,12 +118,12 @@ def start(store):
 
         user_choice = int(user_choice)
         if user_choice in func_dict:
-            if not func_dict[user_choice](store):  # Falls Funktion False zurückgibt, Schleife beenden
+            if not func_dict[user_choice](store):
                 break
         else:
             print("Invalid choice. Please select a number between 1 and 4.")
 
 
-# Hauptprogramm starten
 if __name__ == "__main__":
+    """This function initializes the whole process of shopping at Best Buy."""
     start(best_buy)
