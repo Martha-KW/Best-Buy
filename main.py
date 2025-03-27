@@ -35,7 +35,7 @@ def show_total_number(store):
 
 
 def make_order(store):
-    """This function simulates the ordering process in the simulated Best Price store."""
+    """This function simulates the ordering process in the simulated Best Buy store."""
     print("\n------")
     products = store.get_all_products()
     if not products:
@@ -47,7 +47,6 @@ def make_order(store):
               f" Quantity: {product.get_quantity()}")
     print("------")
 
-    order_total = 0
     order_items = []
 
     while True:
@@ -75,16 +74,19 @@ def make_order(store):
             print("Not enough stock available.")
             continue
 
-        order_total += selected_product.price * amount
         order_items.append((selected_product, amount))
         print("Product added to list!")
 
     if order_items:
+        total_price = store.order(order_items)
         print("********")
-        print(f"Order made! Total payment: ${order_total}")
+        print(f"Order made! Total payment: ${total_price}")
         print("********")
+    else:
+        print("No items were ordered.")
 
     return True
+
 
 
 def quit_best_buy(store):
